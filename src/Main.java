@@ -18,6 +18,7 @@ public class Main {
             System.out.println("6. Ver participantes de expedición");
             System.out.println("7. Listar expedicionarios");
             System.out.println("8. Listar montañas");
+            System.out.printIn("9. Consultar expediciones de un expedicionario");
             System.out.println("0. Salir");
             System.out.print("Opción: ");
             opcion = sc.nextInt();
@@ -145,6 +146,35 @@ public class Main {
                             m.mostrarInfo();
                         }
                     }
+                }
+            }
+            case 9 -> {
+                if (expedicionarios.isEmpty()) {
+                    System.out.println("No hay expedicionarios disponibles.");
+                    break;
+                }
+                System.out.println("ID de Expedicionarios:");
+                for (Expedicionario e : expedicionarios)
+                    System.out.println(e.getId() + " - " + e.getNombre());
+                System.out.print("ID del Expedicionario: ");
+                int idExpedicionario = sc.nextInt(); sc.nextLine();
+                if (idExpedicionario <= 0 || idExpedicionario > expedicionarios.size()) {
+                    System.out.println("ID inválido.");
+                    break;
+                }
+                Expedicionario seleccionado = expedicionarios.get(idExpedicionario - 1);
+                System.out.println("Expediciones de " + seleccionado.getNombre() + ":");
+                boolean encontrado = false;
+                for (Expedicion exp : expediciones) {
+                    for (Participacion p : exp.getParticipantes()) {
+                        if (p.getExpedicionario().equals(seleccionado)) {
+                            System.out.println(" - " + exp.getNombre() + " (" + exp.getFecha() + ") en " + exp.getMontania().nombre + " como " + p.getRol());
+                            encontrado = true;
+                        }
+                    }
+                }
+                if (!encontrado) {
+                    System.out.println("Este expedicionario no ha participado en ninguna expedición.");
                 }
             }
         } while (opcion != 0);
